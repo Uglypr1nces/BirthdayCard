@@ -1,64 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>HBD TO ME</title>
-  <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet"><link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="ballons.css">
+<html>
+    <head>
+        <title>Bday Card</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <main>
+            <div id="divtitle">
+            <h1 id="title">Birthday Present Form!</h1>
+            <p id="description">Fill this out ^-^</p>
 
-</head>
-<div class="balloons">
-	<div class="balloon" style="background-color: red;"></div>
-	<div class="balloon" style="background-color: blue;"></div>
-	<div class="balloon" style="background-color: green;"></div>
-</div>
+            <div id="divform">
+            <form id="survey-form">
+                <label for="name">Your name: </label>
+                <input type="text" id="name" name="name" placeholder="Name Goes Here" required><br>
 
-<div class="balloons">
-	<div class="balloon" style="background-color: red;"></div>
-	<div class="balloon" style="background-color: blue;"></div>
-	<div class="balloon" style="background-color: green;"></div>
-</div>
+                <br>
+                <label for="name">Receiver name: </label>
+                <input type="text" id="receiver_name" name="receiver_name" placeholder="Receiver Goes Here" required><br>
+                <br>
 
-<div class="balloons">
-	<div class="balloon" style="background-color: red;"></div>
-	<div class="balloon" style="background-color: blue;"></div>
-	<div class="balloon" style="background-color: green;"></div>
-</div>
+                <br>
+                    <label>Message: </label>
+                    <textarea name="message" id="message"  placeholder="Message goes here" required></textarea><br>
+                <br>
 
-<div class="balloons">
-	<div class="balloon" style="background-color: red;"></div>
-	<div class="balloon" style="background-color: blue;"></div>
-	<div class="balloon" style="background-color: green;"></div>
-</div>
-
-<div class="card">
-	<body>
-		<div class="imgBox">
-			<div class="bark"></div>
-			<img src="cover4.jpg">
-		</div>
-		<div class="details">
-			<h4 class="color1">HAPPY BIRTHDAY TO YOU</h4>
-			<h4 class="color2 margin">wazzup my big nigga?</h4>
-			<p>Hai</p>
-			<p>hello prej shpatit dhe migenes</p>
-			<p>po ta uroj ditelindjen ne menyr te veqant</p>
-			<p>ashtu siq edhe ti je shoku im i veqant</p>
-			<p>te dua shume dhe te uroj te gjitha te mirat</p>
-			<p>ne jet shpresoj te kesh shendet dhe fat ne jet</p>
-			<p>nga shpati dhe migena </p>
-			<p>we are the best we know hihi:)</p>
-			<p class="text-right">Happy Birthday, letinjo</p>
-			<p class="text-right">♥</p>
-		</div>
-	</div>
-	<div class="audio">
-		<audio controls>
-			<source src="singing.mp3" type="audio/mp3">
-		</audio>
-	</div>
-  <script  src="script.js"></script>
-
-</body>
+                <input type="submit" value="Submit Your Answer">
+            </form>
+            </div>
+            </div>
+        </main>
+    </body>
 </html>
