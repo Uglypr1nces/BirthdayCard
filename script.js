@@ -1,9 +1,13 @@
-import $ from 'jquery-csv.js';
+let sender;
+let recipient;
+let text;
 
-  function saveEdits() {
-    var sender = document.getElementById('name');
-    var recipient = document.getElementById('receiver_name');
-    var text = document.getElementById('text');
+function saveEdits() {
+  sender = document.getElementById('name');
+  recipient = document.getElementById('receiver_name');
+  text = document.getElementById('text');
 
-    var csv_data = $.csc.toobjects('birthdaycard/content/letter.csv');
+  console.log(sender, recipient, text);
   }
+
+export { sender, recipient, text };
