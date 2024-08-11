@@ -1,42 +1,36 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Bday Card</title>
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="textbox.css">
-        <script type="module" src="script.js"></script>
-    </head>
-    <body>
-        <main>
-            <div id="divtitle">
+<head>
+    <title>Bday Card</title>
+    <link rel="stylesheet" href="form/style.css">
+    <link rel="stylesheet" href="form/textbox.css">
+</head>
+<body>
+    <main>
+        <div id="divtitle">
             <h1 id="title">Birthday Present Form!</h1>
             <p id="description">Fill this out ^-^</p>
 
             <div id="divform">
-            <form id="survey-form">
-                <label for="name">Your name: </label>
-                <input type="text" id="name" name="name" placeholder="Name Goes Here" required><br>
+                <form id="survey-form">
+                    <label for="name">Your name: </label>
+                    <input type="text" id="name" name="name" placeholder="Name Goes Here" required><br><br>
 
-                <br>
-                <label for="name">Receiver name: </label>
-                <input type="text" id="receiver_name" name="receiver_name" placeholder="Receiver Goes Here" required><br>
-                <br>
+                    <label for="receiver_name">Receiver name: </label>
+                    <input type="text" id="receiver_name" name="receiver_name" placeholder="Receiver Goes Here" required><br><br>
 
-                <br>
-                <div id="wrapper">
-                    <form id="paper" method="get" action="">
-                      <div id="margin">Message:</div>
-                      <textarea placeholder="Enter your message" id="text" name="text" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 160px; "></textarea>  
-                      <br>
-                    </form>
-                  </div>
-                <br>
-  
-                    <button class="button-74"onclick="saveEdits()">Next</button>
-            
-            </form>
+                    <div id="wrapper">
+                        <div id="margin">Message:</div>
+                        <textarea placeholder="Enter your message" id="text" name="text" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 160px;"></textarea>  
+                    </div>
+                    <br>
+                    <a href="birthdaycard/card.html">
+                        <button id="next-button" class="button-74" type="button"">Next</button>
+                    </a>
+                </form>
             </div>
-            </div>
-        </main>   
-    </body>
+        </div>
+    </main> 
+    <script type = "module" src="form/script.js"></script>  
+</body>
 </html>

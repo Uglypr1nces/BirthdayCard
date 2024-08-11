@@ -1,0 +1,99 @@
+body {
+    margin: 20px auto;
+    text-align: center;
+    font-family: "Courier New", Arial;
+    font-weight: bold;
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+form {
+    display: inline-block;
+    margin: 20px auto;
+}
+
+h1 {
+    font-family: Garamond, Arial;
+}
+
+#title {
+    margin: auto auto 20px auto;
+}
+
+#description {
+    margin: auto auto 20px auto;
+}
+
+hr {
+    height: 3px;
+    background-color: #683d0b;
+}
+
+#dropdown {
+    margin-top: 7px;
+}
+
+#divtitle {
+    border: solid;
+    border-radius: 7px;
+    border-width: 20px;
+    border-color: #422800;
+    margin: 20px;
+    background-color: #cfbeab;
+    color: 422800;
+    padding: 20px;
+}
+
+#message {
+    width: 80%;
+    height: 10em;
+}
+
+
+/* CSS */
+.button-74 {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-74:hover {
+  background-color: #fff;
+}
+
+.button-74:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+  .button-74 {
+    min-width: 120px;
+    padding: 0 25px;
+  }
+}
+
+
+html {
+    background-image: url("https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGU2eWFuNjd2Z2xjanhkanByN2N3bW94ZGZjcjV4NjV0dWlpc3VydiZlcD12MV9pbnRlcm5naWZfYnlfaWQmY3Q9cw/5K1ZcBAC6R005H05Jy/giphy.webp");
+    background-repeat: repeat;
+    background-size: 100px 70px;
+}

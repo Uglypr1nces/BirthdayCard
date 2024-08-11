@@ -1,4 +1,6 @@
-import { sender, recipient, text } from '../script.js';
+let sender = localStorage['sender'];
+let recipient = localStorage['recipient'];
+let text = localStorage['text'];
 
 document.addEventListener("DOMContentLoaded", function() {
     var title = document.getElementById("title");
