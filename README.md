@@ -1,18 +1,22 @@
-# Birthday Card Present
+# Project Name: Birthday Reminder
 
-This is a special birthday card present. It is a digital card that you can customize and send to anyone on their special day. 
+## Description:
+This project is a simple JavaScript application that allows you to send custom birthday cards. An easy and quick way to lighten anyones birthday up.
 
-## Getting Started
-To get started with the birthday card present, follow these steps:
+## Installation:
+1. Clone the repository: `git clone https://github.com/Uglypr1nces/birthday.git`
+2. Navigate to the project directory: `cd birthday-reminder`
+3. open page: `index.html`
 
-1. Clone the repository to your local machine.
-2. Open the `index.html` file in your preferred web browser.
-3. Customize the card by editing the message and design elements.
-4. Preview the card to ensure it looks as expected.
-5. Share the card with the recipient by copying the URL or sending it directly.
 
-## Contributing
-Contributions are welcome! If you have any ideas for improving the birthday card present, feel free to submit a pull request. Please make sure to follow the [contribution guidelines](CONTRIBUTING.md).
+## Contributing:
+Contributions are welcome! Please follow the guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-## License
+## License:
 This project is licensed under the [MIT License](LICENSE).
+
+## Screenshots
+![alt text](/birthdaycard/content/screenshots/form.png)
+
+![alt text](/birthdaycard/content/screenshots/card1.png)
+![alt text](/birthdaycard/content/screenshots/card2.png)

@@ -21,6 +21,15 @@ h1 {
     font-family: Garamond, Arial;
 }
 
+#input-text {
+    margin: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #422800;
+    width: 80%;
+    background-image:url(https://static.tumblr.com/maopbtg/E9Bmgtoht/lines.png), url(https://static.tumblr.com/maopbtg/nBUmgtogx/paper.png);
+}
+
 #title {
     margin: auto auto 20px auto;
 }
