@@ -2,21 +2,29 @@ let sender = localStorage['sender'];
 let recipient = localStorage['recipient'];
 let text = localStorage['text'];
 
+
 document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const content = urlParams.get('content');
 
-    var title = document.getElementById("title");
-    var from = document.getElementById("from");
-    var to = document.getElementById("to");
+    if (content) {
+        // Decode and display the content
+        const decodedContent = decodeURIComponent(content);
+        document.getElementById('message').textContent = decodedContent;
 
-    console.log(sender, recipient, text);
+        // Optionally, you can split the content by lines or specific characters if needed
+        // For example, to separate "To", "From", and "Message"
+        const lines = decodedContent.split('\n');
+        if (lines.length > 1) {
+            document.getElementById('from').textContent = lines[1];
+            document.getElementById('to').textContent = lines[2];
+            document.getElementById('message').textContent = lines.slice(3).join('\n');
+        }
+    }
     
-    title.innerHTML = "Happy Birthday!";
-    from.innerHTML = "From: " + sender;
-    splitString(text, 50); 
-    to.innerHTML = "To: " + recipient;
-
     setAudio();
-    });
+});
+    
     
 function splitString(stringToSplit, limit) {
     let message = [];
