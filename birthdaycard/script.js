@@ -10,29 +10,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     console.log(sender, recipient, text);
     
-    if (!from.innerHTML){
-        title.innerHTML = "Happy Birthday!";
-        from.innerHTML = "From: " + sender;
-        splitString(text, 50); 
-        to.innerHTML = "To: " + recipient;
-    }
+    title.innerHTML = "Happy Birthday!";
+    from.innerHTML = "From: " + sender;
+    splitString(text, 50); 
+    to.innerHTML = "To: " + recipient;
+
     setAudio();
     });
     
-    function splitString(stringToSplit, limit) {
-        let message = [];
-        let container = document.getElementById("message"); // Corrected ID
-    
-        for (var i = 0; i < stringToSplit.length; i += 1) {
-            if (i % limit === 0 && i !== 0) {
-                var newLine = document.createElement("p");
-                newLine.innerHTML = message.join('');
-                container.appendChild(newLine);
-                message = []; 
-            }
-            message.push(stringToSplit[i]);
-        }
-
 function splitString(stringToSplit, limit) {
     let message = [];
     let container = document.getElementById("message"); // Corrected ID
@@ -54,9 +39,22 @@ function splitString(stringToSplit, limit) {
     }
 }
 
-document.addEventListener('click', share);
-    alert("button clicked")
+function share() {
+    let cardContent = `
+        Happy Birthday!\n
+        To: ${localStorage.getItem('recipient')}\n
+        From: ${localStorage.getItem('sender')}\n
+        Message: ${localStorage.getItem('text')}
+    `;
+    const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html/view-card?content=${encodeURIComponent(cardContent)}`;
+
+    navigator.clipboard.writeText(shareableLink).then(() => {
+        alert('Link copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy the link:', err);
+    });
 }
+
 
 
 function setAudio() {
