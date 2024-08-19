@@ -2,8 +2,21 @@ let sender = localStorage['sender'];
 let recipient = localStorage['recipient'];
 let text = localStorage['text'];
 
-
 document.addEventListener("DOMContentLoaded", function() {
+    
+    var title = document.getElementById("title");
+    var from = document.getElementById("from");
+    var to = document.getElementById("to");
+
+    console.log(sender, recipient, text);
+    
+    title.innerHTML = "Happy Birthday!";
+    from.innerHTML = "From: " + sender;
+    splitString(text, 50); 
+    to.innerHTML = "To: " + recipient;
+
+    setAudio();
+    
     const urlParams = new URLSearchParams(window.location.search);
     const content = urlParams.get('content');
 
@@ -23,8 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     setAudio();
-});
-    
+    });
     
 function splitString(stringToSplit, limit) {
     let message = [];
