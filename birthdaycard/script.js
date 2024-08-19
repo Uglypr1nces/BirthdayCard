@@ -1,9 +1,12 @@
-let sender = localStorage.getItem('sender');
-let recipient = localStorage.getItem('recipient');
-let text = localStorage.getItem('text');
-let audio_link = localStorage.getItem('audio_link');
-
 document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    let sender = urlParams.get('sender') || localStorage.getItem('sender');
+    let recipient = urlParams.get('recipient') || localStorage.getItem('recipient');
+    let text = urlParams.get('text') || localStorage.getItem('text');
+    let audio_link = urlParams.get('audio_link') || localStorage.getItem('audio_link');
+
+    // Update the card content
     var title = document.getElementById("title");
     var from = document.getElementById("from");
     var to = document.getElementById("to");
@@ -13,13 +16,13 @@ document.addEventListener("DOMContentLoaded", function() {
     splitString(text, 30); 
     to.innerHTML = "To: " + recipient;
 
-    setAudio();
-    share();
+    // Set audio
+    setAudio(audio_link);
 });
 
 function splitString(stringToSplit, limit) {
     let message = [];
-    let container = document.getElementById("message"); // Corrected ID
+    let container = document.getElementById("message");
 
     for (var i = 0; i < stringToSplit.length; i += 1) {
         if (i % limit === 0 && i !== 0) {
@@ -39,6 +42,11 @@ function splitString(stringToSplit, limit) {
 }
 
 function share() {
+    const sender = localStorage.getItem('sender');
+    const recipient = localStorage.getItem('recipient');
+    const text = localStorage.getItem('text');
+    const audio_link = localStorage.getItem('audio_link');
+    
     const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
     
     navigator.clipboard.writeText(shareableLink).then(() => {
@@ -48,15 +56,13 @@ function share() {
     });
 }
 
-function setAudio() {
-
+function setAudio(audio_link) {
     let audio_player = document.getElementById('audio-player');
     let audioChunks = sessionStorage.getItem('audio_chunks');
 
-    if (audio_link){
+    if (audio_link) {
         audio_player.src = audio_link;
-    }
-    else if (audioChunks) {
+    } else if (audioChunks) {
         try {
             let base64Chunks = JSON.parse(audioChunks);
             if (base64Chunks && Array.isArray(base64Chunks)) {
@@ -78,8 +84,7 @@ function setAudio() {
         } catch (error) {
             console.error("Error parsing JSON: ", error);
         }
-    }
-    else { 
-        alert("No Audio available")
+    } else { 
+        alert("No Audio available");
     }
 }
