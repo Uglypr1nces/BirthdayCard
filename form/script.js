@@ -10,13 +10,16 @@ document.getElementById('next-button').onclick = function() {
     var sender = document.getElementById('name').value;
     var recipient = document.getElementById('receiver_name').value;
     var text = document.getElementById('text').value;
+    var audio_link = document.getElementById('audio-link').value
 
     localStorage['sender'] = sender;
     localStorage['recipient'] = recipient;
     localStorage['text'] = text;
+    localStorage['audio_link'] = audio_link
 }
+document.getElementById('check-button').onclick = function(event) {
+    event.preventDefault(); // Prevent form submission
 
-document.getElementById('check-button').onclick = function() {
     var audio_link = document.getElementById('audio-link').value;
     var audio_player = document.getElementById('audio-player');
 
@@ -36,11 +39,12 @@ document.getElementById('check-button').onclick = function() {
         }
         catch (error) {
             alert('Cant use url as audio source');
-    }}
+        }
+    }
     else {
         var check_button = document.getElementById('check-button');
         var next_button = document.getElementById('next-button');
         check_button.style.display = 'none';
         next_button.style.display = 'block';
     }
-}
+};

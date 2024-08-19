@@ -1,24 +1,19 @@
 let sender = localStorage.getItem('sender');
 let recipient = localStorage.getItem('recipient');
 let text = localStorage.getItem('text');
+let audio_link = localStorage.getItem('audio_link');
 
 document.addEventListener("DOMContentLoaded", function() {
     var title = document.getElementById("title");
     var from = document.getElementById("from");
     var to = document.getElementById("to");
-    
+
     title.innerHTML = "Happy Birthday!";
     from.innerHTML = "From: " + sender;
     splitString(text, 30); 
     to.innerHTML = "To: " + recipient;
 
-    try {
-        setAudio();
-        
-    }
-    catch (error) {
-        console.error('Error retrieving audio chunks:', error);
-    }
+    setAudio();
     share();
 });
 
@@ -44,7 +39,7 @@ function splitString(stringToSplit, limit) {
 }
 
 function share() {
-    const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}`;
+    const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
     
     navigator.clipboard.writeText(shareableLink).then(() => {
         alert('Link copied to clipboard!');
@@ -54,10 +49,14 @@ function share() {
 }
 
 function setAudio() {
+
     let audio_player = document.getElementById('audio-player');
     let audioChunks = sessionStorage.getItem('audio_chunks');
 
-    if (audioChunks) {
+    if (audio_link){
+        audio_player.src = audio_link;
+    }
+    else if (audioChunks) {
         try {
             let base64Chunks = JSON.parse(audioChunks);
             if (base64Chunks && Array.isArray(base64Chunks)) {
@@ -79,7 +78,8 @@ function setAudio() {
         } catch (error) {
             console.error("Error parsing JSON: ", error);
         }
-    } else {
-        console.error('No audio found. Please record first.');
+    }
+    else { 
+        alert("No Audio available")
     }
 }
