@@ -1,29 +1,49 @@
-let sender = localStorage['sender'];
-let recipient = localStorage['recipient'];
-let text = localStorage['text'];
-
 document.addEventListener("DOMContentLoaded", function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sender = urlParams.get('sender');
-    const recipient = urlParams.get('recipient');
-    const text = urlParams.get('text');
+    // Retrieve values from localStorage
+    let sender = localStorage.getItem('sender');
+    let recipient = localStorage.getItem('recipient');
+    let text = localStorage.getItem('text');
 
-    if (sender) {
-        document.getElementById('from').textContent = `From: ${decodeURIComponent(sender)}`;
-    }
+    // Update the DOM elements with the retrieved values
+    var title = document.getElementById("title");
+    var from = document.getElementById("from");
+    var to = document.getElementById("to");
     
-    if (recipient) {
-        document.getElementById('to').textContent = `To: ${decodeURIComponent(recipient)}`;
-    }
+    title.innerHTML = "Happy Birthday!";
+    from.innerHTML = "From: " + sender;
+    splitString(text, 50); 
+    to.innerHTML = "To: " + recipient;
 
-    if (text) {
-        splitString(decodeURIComponent(text), 50);
-    }
-
+    // Initialize audio if available
     setAudio();
+    
+    // Create and copy shareable link to clipboard
+    share();
 });
 
+function splitString(stringToSplit, limit) {
+    let message = [];
+    let container = document.getElementById("message"); // Ensure this ID is correct
+
+    for (let i = 0; i < stringToSplit.length; i++) {
+        if (i % limit === 0 && i !== 0) {
+            let newLine = document.createElement("p");
+            newLine.innerHTML = message.join('');
+            container.appendChild(newLine);
+            message = [];
+        }
+        message.push(stringToSplit[i]);
+    }
+
+    if (message.length > 0) {
+        let newLine = document.createElement("p");
+        newLine.innerHTML = message.join('');
+        container.appendChild(newLine);
+    }
+}
+
 function share() {
+    // Retrieve values from localStorage
     const sender = localStorage.getItem('sender');
     const recipient = localStorage.getItem('recipient');
     const text = localStorage.getItem('text');
@@ -38,29 +58,6 @@ function share() {
         console.error('Failed to copy the link:', err);
     });
 }
-
-
-function share() {
-    // Combine the content of the card into one string
-    let cardContent = `
-        Happy Birthday!\n
-        \nTo: ${localStorage.getItem('recipient')}\n
-        From: ${localStorage.getItem('sender')}\n
-        Message: ${localStorage.getItem('text')}\n
-    `;
-    
-    // Encode the card content for the URL
-    const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html?content=${encodeURIComponent(cardContent)}`;
-    
-    // Copy the shareable link to the clipboard
-    navigator.clipboard.writeText(shareableLink).then(() => {
-        alert('Link copied to clipboard!');
-    }).catch(err => {
-        console.error('Failed to copy the link:', err);
-    });
-}
-
-
 
 function setAudio() {
     let audio_player = document.getElementById('audio-player');
@@ -93,4 +90,3 @@ function setAudio() {
         alert('No audio found. Please record first.');
     }
 }
-
