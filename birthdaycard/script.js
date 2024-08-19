@@ -40,14 +40,18 @@ function splitString(stringToSplit, limit) {
 }
 
 function share() {
+    // Combine the content of the card into one string
     let cardContent = `
         Happy Birthday!\n
         To: ${localStorage.getItem('recipient')}\n
         From: ${localStorage.getItem('sender')}\n
         Message: ${localStorage.getItem('text')}
     `;
-    const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html/view-card?content=${encodeURIComponent(cardContent)}`;
-
+    
+    // Encode the card content for the URL
+    const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html?content=${encodeURIComponent(cardContent)}`;
+    
+    // Copy the shareable link to the clipboard
     navigator.clipboard.writeText(shareableLink).then(() => {
         alert('Link copied to clipboard!');
     }).catch(err => {
