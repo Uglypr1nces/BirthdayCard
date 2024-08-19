@@ -2,9 +2,7 @@ const record_btn = document.getElementById('record-button');
 const audio_player = document.getElementById('audio-player');
 const next_btn = document.getElementById('next-button'); 
 
-next_btn.addEventListener('click', StoreAudio);
 record_btn.addEventListener('click', ToggleMic);
-
 
 let can_record = false;
 let is_recording = false;

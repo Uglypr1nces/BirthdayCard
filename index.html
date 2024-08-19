@@ -4,6 +4,7 @@
     <title>Bday Card</title>
     <link rel="stylesheet" href="form/style.css">
     <link rel="stylesheet" href="form/textbox.css">
+    <script type = "module" src="form/script.js"></script> 
 </head>
 <body>
     <main>
@@ -19,6 +20,12 @@
                     <label for="receiver_name">Receiver name: </label>
                     <input type="text" id="receiver_name" class="input-text" name="receiver_name" placeholder="Receiver Goes Here" required><br><br>
 
+                    <a href="https://simpleguics2pygame.readthedocs.io/en/latest/_static/links/snd_links.html">
+                        <label for="audio-link">Audio Link: </label>    
+                    </a>
+                    <input type="text" id="audio-link" class="input-text" name="audio-link" placeholder="Link Goes Here"><br><br>
+                   <h3>Or</h3>
+
                     <label>Record your audio:</label>
                     <button id="record-button" class="button-74" type="button">Record</button><br><br>
                     <audio id ="audio-player" controls></audio> <br><br>
@@ -27,6 +34,7 @@
                         <textarea placeholder="Enter your message" id="text" name="text" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 160px;"></textarea>  
                     </div>
                     <br>
+                    <button class = "button-74", id="check-button">Check</button>
                     <a href="birthdaycard/card.html">
                         <button id="next-button" class="button-74" type="button"">Next</button>
                     </a>
@@ -34,7 +42,6 @@
             </div>
         </div>
     </main> 
-    <script type = "module" src="form/script.js"></script> 
     <script src="form/recorder.js"> </script> 
 </body>
 </html>

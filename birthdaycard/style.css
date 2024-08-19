@@ -13,7 +13,7 @@ body {
 }
 
 
-@media (min-width: 581px) and (max-width: 1000px) {
+@media (min-width: 581px) and (max-width: 1009px) {
 
 	h4 {
 		font-size: 48px;
@@ -148,10 +148,15 @@ body {
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}
+	#send{
+		margin-left: 50%;
+		margin-top: -210%;
+		z-index: 22;
+	}
 }
 
 
-@media (min-width: 1010px) {
+@media (min-width: 1009px) {
 	h4 {
 		font-size: 26px;
 		line-height: 1px;
@@ -268,4 +273,9 @@ body {
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}
+	#send{
+		margin-left: 50%;
+		margin-top: -10%;
+	}
 }
+
