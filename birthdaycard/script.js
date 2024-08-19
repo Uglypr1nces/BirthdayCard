@@ -3,25 +3,26 @@ let recipient;
 let text;
 let audio_link;
 
-const urlParams = new URLSearchParams(window.location.search);
-
-if (localStorage.getItem('audio_link')){
-    let sender = localStorage.getItem('sender');
-    let recipient = localStorage.getItem('recipient');
-    let text = localStorage.getItem('text');
-    let audio_link = localStorage.getItem('audio_link');
-}
-else{
-    let sender = urlParams.get('sender');
-    let recipient = urlParams.get('recipient');
-    let text = urlParams.get('text');
-    let audio_link = urlParams.get('audio_link');
-}
 
 document.addEventListener("DOMContentLoaded", function() {
     var title = document.getElementById("title");
     var from = document.getElementById("from");
     var to = document.getElementById("to");
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (localStorage.getItem('audio_link') && localStorage.getItem('text')){
+        sender = localStorage.getItem('sender');
+        recipient = localStorage.getItem('recipient');
+        text = localStorage.getItem('text');
+        audio_link = localStorage.getItem('audio_link');
+    }
+    else{
+        sender = urlParams.get('sender');
+        recipient = urlParams.get('recipient');
+        text = urlParams.get('text');
+        audio_link = urlParams.get('audio_link');
+    }
 
     title.innerHTML = "Happy Birthday!";
     from.innerHTML = "From: " + sender;
