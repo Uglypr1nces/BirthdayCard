@@ -1,35 +1,29 @@
+let sender = localStorage.getItem('sender');
+let recipient = localStorage.getItem('recipient');
+let text = localStorage.getItem('text');
+let audio_link = localStorage.getItem('audio_link');
+
 document.addEventListener("DOMContentLoaded", function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    // Get data from URL parameters
-    let sender = urlParams.get('sender');
-    let recipient = urlParams.get('recipient');
-    let text = urlParams.get('text');
-    let audio_link = urlParams.get('audio_link');
+    var title = document.getElementById("title");
+    var from = document.getElementById("from");
+    var to = document.getElementById("to");
 
-    // If URL parameters are missing, set default values or handle accordingly
-    sender = sender ? decodeURIComponent(sender) : 'Anonymous';
-    recipient = recipient ? decodeURIComponent(recipient) : 'Recipient';
-    text = text ? decodeURIComponent(text) : 'Best wishes!';
-    audio_link = audio_link ? decodeURIComponent(audio_link) : null;
+    title.innerHTML = "Happy Birthday!";
+    from.innerHTML = "From: " + sender;
+    splitString(text, 30); 
+    to.innerHTML = "To: " + recipient;
 
-    // Update the card content
-    document.getElementById("title").innerHTML = "Happy Birthday!";
-    document.getElementById("from").innerHTML = "From: " + sender;
-    splitString(text, 30);
-    document.getElementById("to").innerHTML = "To: " + recipient;
-
-    // Set audio
-    setAudio(audio_link);
+    setAudio();
+    share();
 });
 
 function splitString(stringToSplit, limit) {
     let message = [];
-    let container = document.getElementById("message");
+    let container = document.getElementById("message"); // Corrected ID
 
-    for (let i = 0; i < stringToSplit.length; i += 1) {
+    for (var i = 0; i < stringToSplit.length; i += 1) {
         if (i % limit === 0 && i !== 0) {
-            let newLine = document.createElement("p");
+            var newLine = document.createElement("p");
             newLine.innerHTML = message.join('');
             container.appendChild(newLine);
             message = []; 
@@ -38,30 +32,13 @@ function splitString(stringToSplit, limit) {
     }
 
     if (message.length > 0) {
-        let newLine = document.createElement("p");
+        var newLine = document.createElement("p");
         newLine.innerHTML = message.join('');
         container.appendChild(newLine);
     }
 }
 
-function setAudio(audio_link) {
-    let audio_player = document.getElementById('audio-player');
-
-    if (audio_link) {
-        audio_player.src = audio_link;
-    } else { 
-        alert("No audio link provided.");
-    }
-}
-
 function share() {
-    // Fetch data from inputs or existing values
-    const sender = document.getElementById('name').value || 'Anonymous';
-    const recipient = document.getElementById('receiver_name').value || 'Recipient';
-    const text = document.getElementById('text').value || 'Best wishes!';
-    const audio_link = document.getElementById('audio-link').value;
-
-    // Encode and create shareable link
     const shareableLink = `https://uglypr1nces.github.io/birthday/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
     
     navigator.clipboard.writeText(shareableLink).then(() => {
@@ -69,4 +46,40 @@ function share() {
     }).catch(err => {
         console.error('Failed to copy the link:', err);
     });
+}
+
+function setAudio() {
+
+    let audio_player = document.getElementById('audio-player');
+    let audioChunks = sessionStorage.getItem('audio_chunks');
+
+    if (audio_link){
+        audio_player.src = audio_link;
+    }
+    else if (audioChunks) {
+        try {
+            let base64Chunks = JSON.parse(audioChunks);
+            if (base64Chunks && Array.isArray(base64Chunks)) {
+                const blobParts = base64Chunks.map(base64 => {
+                    const binaryString = atob(base64);
+                    const len = binaryString.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    return new Blob([bytes], { type: 'audio/wav' });
+                });
+
+                const finalBlob = new Blob(blobParts, { type: 'audio/wav' });
+                audio_player.src = window.URL.createObjectURL(finalBlob);
+            } else {
+                console.error("Parsed data is not a valid array");
+            }
+        } catch (error) {
+            console.error("Error parsing JSON: ", error);
+        }
+    }
+    else { 
+        alert("No Audio available")
+    }
 }
