@@ -1,4 +1,4 @@
-# Project Name: Birthday Reminder
+# Project Name: Birthday Card
 
 ## Description:
 This project is a simple JavaScript application that allows you to send custom birthday cards. An easy and quick way to lighten anyones birthday up.
