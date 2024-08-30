@@ -37,22 +37,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (sessionStorage.getItem('audio_link')) {
             setAudio(sessionStorage.getItem('audio_link'), null); 
+            share(sessionStorage.getItem('audio_link'), null); 
         } else if (sessionStorage.getItem('audio_chunks')) {
             setAudio(null, sessionStorage.getItem('audio_chunks')); 
+            share(null, sessionStorage.getItem('audio_chunks')); 
         }
     }
     
     else {
         alert("how did you get here?");
     }
-
-    if (urlParams.has('audio_link')) {
-        setAudio(urlParams.get('audio_link'), null); 
-    } else if (urlParams.has('audio_chunks')) {
-        setAudio(null, urlParams.get('audio_chunks')); 
-    }
-
-    console.log(sender, recipient, text);
 
     title.innerHTML = "Happy Birthday!";
     from.innerHTML = "From: " + sender;
@@ -81,7 +75,7 @@ function splitString(stringToSplit, limit) {
     }
 }
 
-function share() {
+function share(audio_link,audio_chunks) {
     let shareableLink;
     if (audio_chunks) {
         shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
