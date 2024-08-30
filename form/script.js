@@ -1,5 +1,3 @@
-var next_button;
-
 document.addEventListener('DOMContentLoaded', function() {
     var next_button = document.getElementById('next-button');
     next_button.style.display = 'none';
@@ -26,9 +24,9 @@ document.getElementById('check-button').onclick = function(event) {
     if (audio_link !== '' && audio_player.src) {
         alert('You cant add a link and an audio');
     }
-    else if (audio_link == '' && !audio_player.src) {
+    else if (audio_link === '' && audio_player.src === '') {
         alert('Add an audio or record your own');
-    }
+    }    
     else if (audio_link !== '' && !audio_player.src) {
         try {
             audio_player.src = audio_link;
@@ -39,6 +37,7 @@ document.getElementById('check-button').onclick = function(event) {
         }
         catch (error) {
             alert('Cant use url as audio source');
+            audio_player.src = '';
         }
     }
     else {

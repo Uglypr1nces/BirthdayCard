@@ -1,57 +1,72 @@
 let sender;
 let recipient;
 let text;
-let audio_link;
+let audio_link = null;
+let audio_chunks = null;
 
 document.addEventListener("DOMContentLoaded", function() {
     var title = document.getElementById("title");
     var from = document.getElementById("from");
     var to = document.getElementById("to");
 
-    var share_button = document.getElementById("send")
+    var share_button = document.getElementById("send");
 
     const urlParams = new URLSearchParams(window.location.search);
 
-    // Explicitly check if all required localStorage items are present
-    if (localStorage.getItem('sender') && localStorage.getItem('recipient') && localStorage.getItem('text')){
-        sender = localStorage.getItem('sender');
-        recipient = localStorage.getItem('recipient');
-        text = localStorage.getItem('text');
-        audio_link = localStorage.getItem('audio_link');
-        alert("Birthday Card made!")
-    }
-    
-    else if(urlParams.get('sender') && urlParams.get('recipient') && urlParams.getItem('text')){
+    if (urlParams.has('sender') && urlParams.has('recipient') && urlParams.has('text')) {
         sender = urlParams.get('sender');
         recipient = urlParams.get('recipient');
         text = urlParams.get('text');
-        audio_link = urlParams.get('audio_link');
-        share_button.style.visibility = 'none'
-        alert("Happy Birthday " + recipient)
+
+        share_button.style.visibility = 'hidden';
+        alert("Happy Birthday " + recipient);
+
+        if (urlParams.has('audio_link')) {
+            setAudio(urlParams.get('audio_link'), null); 
+        } else if (urlParams.has('audio_chunks')) {
+            setAudio(null, urlParams.get('audio_chunks')); 
+        }
+    } 
+
+    else if (localStorage.getItem('sender') && localStorage.getItem('recipient') && localStorage.getItem('text')) {
+        sender = localStorage.getItem('sender');
+        recipient = localStorage.getItem('recipient');
+        text = localStorage.getItem('text');
+        alert("Birthday Card made!");
+        share();
+
+        if (sessionStorage.getItem('audio_link')) {
+            setAudio(sessionStorage.getItem('audio_link'), null); 
+        } else if (sessionStorage.getItem('audio_chunks')) {
+            setAudio(null, sessionStorage.getItem('audio_chunks')); 
+        }
+    }
+    
+    else {
+        alert("how did you get here?");
     }
 
-    else{
-        alert("how did you get here?")
+    if (urlParams.has('audio_link')) {
+        setAudio(urlParams.get('audio_link'), null); 
+    } else if (urlParams.has('audio_chunks')) {
+        setAudio(null, urlParams.get('audio_chunks')); 
     }
 
-    console.log(sender,recipient,text,audio_link)
+    console.log(sender, recipient, text);
 
     title.innerHTML = "Happy Birthday!";
     from.innerHTML = "From: " + sender;
     splitString(text, 30);
     to.innerHTML = "To: " + recipient;
-
-    setAudio();
-    share();
 });
 
 function splitString(stringToSplit, limit) {
     let message = [];
     let container = document.getElementById("message");
 
-    for (var i = 0; i < stringToSplit.length; i += 1) {
+    for (let i = 0; i < stringToSplit.length; i++) {
         if (i % limit === 0 && i !== 0) {
-            var newLine = document.createElement("p");
+            let newLine = document.createElement("p");
             newLine.innerHTML = message.join('');
             container.appendChild(newLine);
             message = [];
@@ -60,31 +75,43 @@ function splitString(stringToSplit, limit) {
     }
 
     if (message.length > 0) {
-        var newLine = document.createElement("p");
+        let newLine = document.createElement("p");
         newLine.innerHTML = message.join('');
         container.appendChild(newLine);
     }
 }
 
 function share() {
-    const shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
-    
+    let shareableLink;
+    if (audio_chunks) {
+        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
+    } else if (audio_link) {
+        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
+    } else {
+        alert("No link or recording to pass...");
+        return; 
+    }
+
     navigator.clipboard.writeText(shareableLink).then(() => {
         alert('Link copied to clipboard!');
+        localStorage.removeItem('sender');
+        localStorage.removeItem('recipient');
+        localStorage.removeItem('text');
+        localStorage.removeItem('audio_link');
+        sessionStorage.removeItem('audio_chunks');
     }).catch(err => {
         console.error('Failed to copy the link:', err);
     });
 }
 
-function setAudio() {
+function setAudio(audio_link, audio_chunks) {
     let audio_player = document.getElementById('audio-player');
-    let audioChunks = sessionStorage.getItem('audio_chunks');
 
     if (audio_link) {
         audio_player.src = audio_link;
-    } else if (audioChunks) {
+    } else if (audio_chunks) {
         try {
-            let base64Chunks = JSON.parse(audioChunks);
+            let base64Chunks = JSON.parse(audio_chunks);
             if (base64Chunks && Array.isArray(base64Chunks)) {
                 const blobParts = base64Chunks.map(base64 => {
                     const binaryString = atob(base64);

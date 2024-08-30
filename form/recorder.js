@@ -21,7 +21,6 @@ function SetupAudio(){
         .catch(function(err) {
             console.log(err);
         });
-            
     }
 }
 
@@ -32,11 +31,16 @@ function SetupStream(stream){
     };
     recorder.onstop = e => {
         const blob = new Blob(chunks, { type: 'audio/wav' });
-        console.log("blob: " + blob);
-        console.log("chunks" + chunks);
-        chunks = [];
+        console.log("blob: ", blob);
+        console.log("chunks: ", chunks);
         const audioURL = window.URL.createObjectURL(blob);
         audio_player.src = audioURL;
+
+        // Call StoreAudio only after the chunks have been processed
+        StoreAudio();
+
+        // Clear chunks after storing
+        chunks = [];
     };  
 }
 
@@ -46,35 +50,43 @@ function ToggleMic(){
             recorder.stop();
             record_btn.innerText = 'Record';
             is_recording = false;
-            
-        }else{
+        } else {
             recorder.start();
             record_btn.innerText = 'Stop';
             is_recording = true;
         }
-    }else{
+    } else {
         alert('Please allow microphone access');
     }
 }
 
 function StoreAudio() {
-    if (audio_player.src) {
-        // Convert each Blob chunk to a Base64 string and store them in an array
-        const base64Chunks = [];
-        chunks.forEach(chunk => {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                base64Chunks.push(reader.result.split(',')[1]); // Store the base64 part
-                if (base64Chunks.length === chunks.length) {
-                    sessionStorage.setItem('audio_chunks', JSON.stringify(base64Chunks));
-                }
-            };
-            reader.readAsDataURL(chunk);
+    if (chunks.length > 0) {
+        const base64ChunksPromises = chunks.map(chunk => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    const base64 = reader.result.split(',')[1]; // Base64 part
+                    resolve(base64);
+                };
+                reader.onerror = function(error) {
+                    reject(error);
+                };
+                reader.readAsDataURL(chunk);
+            });
         });
+
+        Promise.all(base64ChunksPromises)
+            .then(base64Chunks => {
+                sessionStorage.setItem('audio_chunks', JSON.stringify(base64Chunks));
+                console.log(sessionStorage.getItem('audio_chunks'));
+            })
+            .catch(error => {
+                console.error('Error encoding audio chunks: ', error);
+            });
     } else {
         alert('Please record audio first');
     }
 }
-
 
 SetupAudio();
