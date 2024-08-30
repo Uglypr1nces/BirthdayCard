@@ -75,11 +75,11 @@ function splitString(stringToSplit, limit) {
     }
 }
 
-function share(audio_link,audio_chunks) {
+function share(audio_link, audio_chunks) {
     let shareableLink;
-    if (audio_chunks) {
+    if (audio_chunks && audio_chunks.length > 0) {  // Check if audio_chunks is not null and not empty
         shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
-    } else if (audio_link) {
+    } else if (audio_link && audio_link.trim() !== "") {  // Check if audio_link is not null and not an empty string
         shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
     } else {
         alert("No link or recording to pass...");
@@ -91,12 +91,13 @@ function share(audio_link,audio_chunks) {
         localStorage.removeItem('sender');
         localStorage.removeItem('recipient');
         localStorage.removeItem('text');
-        localStorage.removeItem('audio_link');
-        sessionStorage.removeItem('audio_chunks');
+        localStorage.removeItem('audio_link');  // Remove audio_link from localStorage
+        sessionStorage.removeItem('audio_chunks');  // Remove audio_chunks from sessionStorage
     }).catch(err => {
         console.error('Failed to copy the link:', err);
     });
 }
+
 
 function setAudio(audio_link, audio_chunks) {
     let audio_player = document.getElementById('audio-player');
