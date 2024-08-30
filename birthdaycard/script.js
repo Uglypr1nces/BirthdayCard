@@ -13,18 +13,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
 
     // Explicitly check if all required localStorage items are present
-    if (localStorage.getItem('sender') && localStorage.getItem('recipient') && localStorage.getItem('text') && localStorage.getItem('audio_link')) {
+    if (localStorage.getItem('sender') && localStorage.getItem('recipient') && localStorage.getItem('text')){
         sender = localStorage.getItem('sender');
         recipient = localStorage.getItem('recipient');
         text = localStorage.getItem('text');
         audio_link = localStorage.getItem('audio_link');
-    } else {
+        alert("Birthday Card made!")
+    }
+    
+    else if(urlParams.get('sender') && urlParams.get('recipient') && urlParams.getItem('text')){
         sender = urlParams.get('sender');
         recipient = urlParams.get('recipient');
         text = urlParams.get('text');
         audio_link = urlParams.get('audio_link');
         share_button.style.visibility = 'none'
+        alert("Happy Birthday " + recipient)
     }
+
+    else{
+        alert("how did you get here?")
+    }
+
+    console.log(sender,recipient,text,audio_link)
 
     title.innerHTML = "Happy Birthday!";
     from.innerHTML = "From: " + sender;
