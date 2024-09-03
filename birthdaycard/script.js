@@ -3,6 +3,7 @@ let recipient;
 let text;
 let audio_link = null;
 let audio_chunks = null;
+let shareableLink;
 
 document.addEventListener("DOMContentLoaded", function() {
     var title = document.getElementById("title");
@@ -75,35 +76,25 @@ function splitString(stringToSplit, limit) {
     }
 }
 
-function share(audio_link, audio_chunks) {
-    let shareableLink;
-    if (audio_chunks && audio_chunks.length > 0) {  // Check if audio_chunks is not null and not empty
-        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
-    } else if (audio_link && audio_link.trim() !== "") {  // Check if audio_link is not null and not an empty string
-        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
-    } else {
-        alert("No link or recording to pass...");
-        return; 
-    }
-
-    navigator.clipboard.writeText(shareableLink).then(() => {
-        alert('Link copied to clipboard!');
-        localStorage.removeItem('sender');
-        localStorage.removeItem('recipient');
-        localStorage.removeItem('text');
-        localStorage.removeItem('audio_link');  // Remove audio_link from localStorage
-        sessionStorage.removeItem('audio_chunks');  // Remove audio_chunks from sessionStorage
-    }).catch(err => {
-        console.error('Failed to copy the link:', err);
-    });
+function clean() {
+    localStorage.removeItem('sender');
+    localStorage.removeItem('recipient');
+    localStorage.removeItem('text');
+    localStorage.removeItem('audio_link');  
+    sessionStorage.removeItem('audio_chunks'); 
 }
 
+function share(){
+    alert("Send this link: " + shareableLink)
+}
 
 function setAudio(audio_link, audio_chunks) {
     let audio_player = document.getElementById('audio-player');
 
     if (audio_link) {
         audio_player.src = audio_link;
+        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
+
     } else if (audio_chunks) {
         try {
             let base64Chunks = JSON.parse(audio_chunks);
@@ -120,6 +111,9 @@ function setAudio(audio_link, audio_chunks) {
 
                 const finalBlob = new Blob(blobParts, { type: 'audio/wav' });
                 audio_player.src = window.URL.createObjectURL(finalBlob);
+                shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
+                clean();
+                    
             } else {
                 console.error("Parsed data is not a valid array");
             }
