@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function() {
         recipient = localStorage.getItem('recipient');
         text = localStorage.getItem('text');
         alert("Birthday Card made!");
-        share();
 
         if (sessionStorage.getItem('audio_link')) {
             setAudio(sessionStorage.getItem('audio_link'), null); 
@@ -84,6 +83,20 @@ function clean() {
     sessionStorage.removeItem('audio_chunks'); 
 }
 
+function urlShortener(link){
+    const apiUrl = `https://api.shrtco.de/v2/shorten?url=${link}`;
+    try{
+        const response = fetch(apiUrl);
+        const data = response.json();
+        console.log(data);
+        console.log(data.result.full_short_link);
+    
+      }catch(e){
+        
+        console.error(e);
+      }
+}
+
 function share(){
     alert("Send this link: " + shareableLink)
 }
@@ -112,6 +125,7 @@ function setAudio(audio_link, audio_chunks) {
                 const finalBlob = new Blob(blobParts, { type: 'audio/wav' });
                 audio_player.src = window.URL.createObjectURL(finalBlob);
                 shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
+                urlShortener(shareableLink)
                 clean();
                     
             } else {
