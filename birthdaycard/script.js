@@ -98,9 +98,15 @@ function urlShortener(link){
       }
 }
 
-function share(){
-    alert("Send this link: " + shareableLink)
+function share() {
+    if (!shareableLink) {
+        console.error("Error: Shareable link is undefined. Ensure setAudio() has been called.");
+        alert("Something went wrong! Please try again.");
+        return;
+    }
+    alert("Send this link: " + shareableLink);
 }
+
 
 function setAudio(audio_link, audio_chunks) {
     let audio_player = document.getElementById('audio-player');
@@ -108,6 +114,7 @@ function setAudio(audio_link, audio_chunks) {
     if (audio_link) {
         audio_player.src = audio_link;
         shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
+        console.log("Shareable link (audio_link):", shareableLink);
 
     } else if (audio_chunks) {
         try {
@@ -126,6 +133,7 @@ function setAudio(audio_link, audio_chunks) {
                 const finalBlob = new Blob(blobParts, { type: 'audio/wav' });
                 audio_player.src = window.URL.createObjectURL(finalBlob);
                 shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
+                console.log("Shareable link (audio_chunks):", shareableLink);
                 clean();
                     
             } else {
