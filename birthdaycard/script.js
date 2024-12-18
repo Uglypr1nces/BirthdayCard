@@ -152,17 +152,19 @@ function share(chunkies, linkies) {
     }
 }
 
-function setAudio(audio_link, audio_chunks) {
+function setAudio(link, chunks) {
+    console.log(link)
+    console.log(link)
     try {
         const audio_player = document.getElementById('audio-player');
         if (!audio_player) throw new Error("Audio player element not found in DOM.");
 
-        if (audio_link) {
+        if (link) {
             console.log("Setting audio from link");
-            audio_player.src = audio_link;
-        } else if (audio_chunks) {
+            audio_player.src = link;
+        } else if (chunks) {
             console.log("Setting audio from chunks");
-            const base64Chunks = JSON.parse(audio_chunks);
+            const base64Chunks = JSON.parse(chunks);
             if (base64Chunks && Array.isArray(base64Chunks)) {
                 const blobParts = base64Chunks.map(base64 => {
                     const binaryString = atob(base64);
