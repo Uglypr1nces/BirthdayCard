@@ -1,8 +1,8 @@
 let sender;
 let recipient;
 let text;
-let audio_link = null;
-let audio_chunks = null;
+let audio_link;
+let audio_chunks;
 let shareableLink;
 
 document.addEventListener("DOMContentLoaded", function () {
