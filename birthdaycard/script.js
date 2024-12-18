@@ -83,6 +83,7 @@ function clean() {
     sessionStorage.removeItem('audio_chunks'); 
 }
 
+//not working
 function urlShortener(link){
     const apiUrl = `https://api.shrtco.de/v2/shorten?url=${link}`;
     try{
@@ -125,7 +126,6 @@ function setAudio(audio_link, audio_chunks) {
                 const finalBlob = new Blob(blobParts, { type: 'audio/wav' });
                 audio_player.src = window.URL.createObjectURL(finalBlob);
                 shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
-                urlShortener(shareableLink)
                 clean();
                     
             } else {
