@@ -1,120 +1,139 @@
-let sender;
-let recipient;
-let text;
-let audio_link;
-let audio_chunks;
-let shareableLink;
+let sender, recipient, text, shareableLink;
 
 document.addEventListener("DOMContentLoaded", function () {
     try {
-        const title = document.getElementById("title");
-        const from = document.getElementById("from");
-        const to = document.getElementById("to");
-        const share_button = document.getElementById("send");
-        const urlParams = new URLSearchParams(window.location.search);
-
-        console.log("Debug: URL Params", urlParams.toString());
-
-        if (urlParams.has('sender') && urlParams.has('recipient') && urlParams.has('text')) {
-            sender = urlParams.get('sender');
-            recipient = urlParams.get('recipient');
-            text = urlParams.get('text');
-
-            console.log("Debug: Retrieved from URL params", { sender, recipient, text });
-
-            share_button.style.visibility = 'hidden';
-            alert(`Happy Birthday ${recipient}!`);
-
-            if (urlParams.has('audio_link')) {
-                setAudio(urlParams.get('audio_link'), null);
-            } else if (urlParams.has('audio_chunks')) {
-                setAudio(null, urlParams.get('audio_chunks'));
-            }
-        } else if (localStorage.getItem('sender') && localStorage.getItem('recipient') && localStorage.getItem('text')) {
-            sender = localStorage.getItem('sender');
-            recipient = localStorage.getItem('recipient');
-            text = localStorage.getItem('text');
-
-            console.log("Debug: Retrieved from localStorage", { sender, recipient, text });
-
-            alert("Birthday Card made!");
-
-            if (localStorage.getItem('audio_link')) {
-                console.log("Using audio link from localStorage");
-                share(localStorage.getItem('audio_link'), null);
-                setAudio(localStorage.getItem('audio_link'), null);
-            } else if (localStorage.getItem('audio_chunks')) {
-                console.log("Using audio chunks from localStorage");
-                share(null, localStorage.getItem('audio_chunks'));
-                setAudio(null, localStorage.getItem('audio_chunks'));
-            } else {
-                console.log("no audio option found")
-            }
-        } else {
-            alert("How did you get here?");
-            console.warn("No valid data found in URL or storage.");
-        }
-
-        if (title && from && to) {
-            title.innerHTML = "Happy Birthday!";
-            from.innerHTML = `From: ${sender}`;
-            splitString(text, 30);
-            to.innerHTML = `To: ${recipient}`;
-        } else {
-            console.error("Missing DOM elements for title, from, or to.");
-        }
+        initializeData();
+        updateUI();
     } catch (error) {
         console.error("Error during initialization:", error);
     }
 });
 
-function splitString(stringToSplit, limit) {
+/**
+ * Initializes data from URL parameters or localStorage.
+ */
+function initializeData() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has("sender") && urlParams.has("recipient") && urlParams.has("text")) {
+        // Retrieve data from URL parameters
+        sender = urlParams.get("sender");
+        recipient = urlParams.get("recipient");
+        text = urlParams.get("text");
+
+        console.log("Debug: Data retrieved from URL params:", { sender, recipient, text });
+
+        // Handle audio setup
+        const audioLink = urlParams.get("audio_link");
+        const audioChunks = urlParams.get("audio_chunks");
+        if (audioLink) {
+            setAudio(audioLink, null);
+        } else if (audioChunks) {
+            setAudio(null, audioChunks);
+        }
+
+        // Hide the share button (specific to this case)
+        document.getElementById("send").style.visibility = "hidden";
+        alert(`Happy Birthday ${recipient}!`);
+    } else if (localStorage.getItem("sender") && localStorage.getItem("recipient") && localStorage.getItem("text")) {
+        // Retrieve data from localStorage
+        sender = localStorage.getItem("sender");
+        recipient = localStorage.getItem("recipient");
+        text = localStorage.getItem("text");
+
+        console.log("Debug: Data retrieved from localStorage:", { sender, recipient, text });
+
+        // Handle audio setup
+        const audioLink = localStorage.getItem("audio_link");
+        const audioChunks = localStorage.getItem("audio_chunks");
+        if (audioLink) {
+            setAudio(audioLink, null);
+        } else if (audioChunks) {
+            setAudio(null, audioChunks);
+        }
+
+        alert("Birthday card created!");
+    } else {
+        alert("No data found! Please check the URL or localStorage.");
+        console.warn("Debug: Missing data in URL parameters or localStorage.");
+    }
+}
+
+/**
+ * Updates the UI with the retrieved data.
+ */
+function updateUI() {
+    const title = document.getElementById("title");
+    const from = document.getElementById("from");
+    const to = document.getElementById("to");
+
+    if (title && from && to) {
+        title.innerHTML = "Happy Birthday!";
+        from.innerHTML = `From: ${sender}`;
+        to.innerHTML = `To: ${recipient}`;
+        displayMessageWithLineBreaks(text, 30);
+    } else {
+        console.error("Missing DOM elements for title, from, or to.");
+    }
+}
+
+/**
+ * Splits a string into lines of a specific length and updates the UI.
+ */
+function displayMessageWithLineBreaks(stringToSplit, limit) {
     try {
         const container = document.getElementById("message");
         if (!container) throw new Error("Message container not found in DOM.");
 
+        container.innerHTML = ""; // Clear any existing content
         let message = [];
+
         for (let i = 0; i < stringToSplit.length; i++) {
             if (i % limit === 0 && i !== 0) {
-                let newLine = document.createElement("p");
-                newLine.innerHTML = message.join('');
-                container.appendChild(newLine);
+                appendMessageLine(container, message);
                 message = [];
             }
             message.push(stringToSplit[i]);
         }
 
-        if (message.length > 0) {
-            let newLine = document.createElement("p");
-            newLine.innerHTML = message.join('');
-            container.appendChild(newLine);
-        }
+        // Append the last line
+        if (message.length > 0) appendMessageLine(container, message);
     } catch (error) {
-        console.error("Error in splitString:", error);
+        console.error("Error in displayMessageWithLineBreaks:", error);
     }
 }
 
+/**
+ * Appends a message line to the container.
+ */
+function appendMessageLine(container, message) {
+    const newLine = document.createElement("p");
+    newLine.textContent = message.join("");
+    container.appendChild(newLine);
+}
+
+/**
+ * Cleans up all stored data.
+ */
 function clean() {
     try {
-        localStorage.removeItem('sender');
-        localStorage.removeItem('recipient');
-        localStorage.removeItem('text');
-        localStorage.removeItem('audio_link');
-        localStorage.removeItem('audio_chunks');
+        localStorage.clear();
+        console.log("LocalStorage cleared.");
     } catch (error) {
         console.error("Error while cleaning storage:", error);
     }
 }
 
+/**
+ * Shortens a given URL using the shrtco.de API.
+ */
 async function urlShortener(link) {
     try {
         const apiUrl = `https://api.shrtco.de/v2/shorten?url=${encodeURIComponent(link)}`;
         console.log("Debug: Shortener API Link =", apiUrl);
 
         const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`Shortener API responded with status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Shortener API responded with status: ${response.status}`);
 
         const data = await response.json();
         if (data.ok && data.result && data.result.full_short_link) {
@@ -129,16 +148,19 @@ async function urlShortener(link) {
     }
 }
 
-function share(chunkies, linkies) {
+/**
+ * Creates and displays a shareable link.
+ */
+function share(audioChunks, audioLink) {
     try {
         if (!sender || !recipient || !text) {
             throw new Error("Missing sender, recipient, or text data for sharing.");
         }
 
-        if (linkies) {
-            shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(linkies)}`;
-        } else if (chunkies) {
-            shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(chunkies)}`;
+        if (audioLink) {
+            shareableLink = createShareableLink(audioLink, null);
+        } else if (audioChunks) {
+            shareableLink = createShareableLink(null, audioChunks);
         } else {
             throw new Error("No valid audio data provided for sharing.");
         }
@@ -152,41 +174,62 @@ function share(chunkies, linkies) {
     }
 }
 
+/**
+ * Generates a shareable link.
+ */
+function createShareableLink(audioLink, audioChunks) {
+    const baseURL = "https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html";
+    const params = new URLSearchParams({
+        sender: encodeURIComponent(sender),
+        recipient: encodeURIComponent(recipient),
+        text: encodeURIComponent(text),
+    });
+
+    if (audioLink) params.set("audio_link", encodeURIComponent(audioLink));
+    if (audioChunks) params.set("audio_chunks", encodeURIComponent(audioChunks));
+
+    return `${baseURL}?${params.toString()}`;
+}
+
+/**
+ * Sets the audio source for the player.
+ */
 function setAudio(link, chunks) {
-    console.log(link)
-    console.log(link)
     try {
-        const audio_player = document.getElementById('audio-player');
-        if (!audio_player) throw new Error("Audio player element not found in DOM.");
+        const audioPlayer = document.getElementById("audio-player");
+        if (!audioPlayer) throw new Error("Audio player element not found in DOM.");
 
         if (link) {
-            console.log("Setting audio from link");
-            audio_player.src = link;
+            console.log("Setting audio from link:", link);
+            audioPlayer.src = link;
         } else if (chunks) {
-            console.log("Setting audio from chunks");
-            const base64Chunks = JSON.parse(chunks);
-            if (base64Chunks && Array.isArray(base64Chunks)) {
-                const blobParts = base64Chunks.map(base64 => {
-                    const binaryString = atob(base64);
-                    const len = binaryString.length;
-                    const bytes = new Uint8Array(len);
-                    for (let i = 0; i < len; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
-                    }
-                    return new Blob([bytes], { type: 'audio/wav' });
-                });
-
-                const finalBlob = new Blob(blobParts, { type: 'audio/wav' });
-                audio_player.src = window.URL.createObjectURL(finalBlob);
-            } else {
-                throw new Error("Parsed audio chunks data is not a valid array.");
-            }
+            console.log("Setting audio from chunks.");
+            const blob = createBlobFromChunks(chunks);
+            audioPlayer.src = window.URL.createObjectURL(blob);
         } else {
             console.warn("No audio data provided.");
-            audio_player.src = ''; // Fallback to empty source
+            audioPlayer.src = ""; // Fallback to empty source
         }
     } catch (error) {
         console.error("Error in setAudio:", error);
         alert("Failed to process audio data.");
     }
+}
+
+/**
+ * Converts audio chunks (base64) to a Blob.
+ */
+function createBlobFromChunks(chunks) {
+    const base64Chunks = JSON.parse(chunks);
+    const blobParts = base64Chunks.map(base64 => {
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([bytes], { type: "audio/wav" });
+    });
+
+    return new Blob(blobParts, { type: "audio/wav" });
 }
