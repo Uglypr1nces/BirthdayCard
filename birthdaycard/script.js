@@ -41,13 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (sessionStorage.getItem('audio_link')) {
                 console.log("Using audio link from sessionStorage");
-                setAudio(sessionStorage.getItem('audio_link'), null);
                 share(sessionStorage.getItem('audio_link'), null);
+                setAudio(sessionStorage.getItem('audio_link'), null);
             } else if (sessionStorage.getItem('audio_chunks')) {
                 console.log("Using audio chunks from sessionStorage");
-                setAudio(null, sessionStorage.getItem('audio_chunks'));
                 share(null, sessionStorage.getItem('audio_chunks'));
-            }
+                setAudio(null, sessionStorage.getItem('audio_chunks'));            }
         } else {
             alert("How did you get here?");
             console.warn("No valid data found in URL or storage.");
