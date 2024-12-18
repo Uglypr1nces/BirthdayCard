@@ -98,24 +98,27 @@ function urlShortener(link){
       }
 }
 
-function share() {
+function share(chunkies, linkies) {
     if (!shareableLink) {
         console.error("Error: Shareable link is undefined. Ensure setAudio() has been called.");
         alert("Something went wrong! Please try again.");
         return;
     }
-    alert("Send this link: " + shareableLink);
+    if (linkies){
+        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(linkies)}`;
+    }
+    else if (chunkies){
+        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(chunkies)}`;
+    }
+    alert("Share this link to ${recipient}: ${sharableLink}")
+    clean();
 }
-
 
 function setAudio(audio_link, audio_chunks) {
     let audio_player = document.getElementById('audio-player');
 
     if (audio_link) {
         audio_player.src = audio_link;
-        shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_link=${encodeURIComponent(audio_link)}`;
-        console.log("Shareable link (audio_link):", shareableLink);
-
     } else if (audio_chunks) {
         try {
             let base64Chunks = JSON.parse(audio_chunks);
@@ -132,17 +135,16 @@ function setAudio(audio_link, audio_chunks) {
 
                 const finalBlob = new Blob(blobParts, { type: 'audio/wav' });
                 audio_player.src = window.URL.createObjectURL(finalBlob);
-                shareableLink = `https://uglypr1nces.github.io/BirthdayCard/birthdaycard/card.html?sender=${encodeURIComponent(sender)}&recipient=${encodeURIComponent(recipient)}&text=${encodeURIComponent(text)}&audio_chunks=${encodeURIComponent(audio_chunks)}`;
-                console.log("Shareable link (audio_chunks):", shareableLink);
-                clean();
-                    
             } else {
                 console.error("Parsed data is not a valid array");
+                alert("Invalid audio chunks.");
             }
         } catch (error) {
             console.error("Error parsing JSON: ", error);
+            alert("Failed to process audio chunks.");
         }
     } else {
-        alert("No Audio available");
+        console.warn("No audio available");
+        audio_player.src = ''; // Fallback or silent failure
     }
 }
