@@ -13,10 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const share_button = document.getElementById("send");
         const urlParams = new URLSearchParams(window.location.search);
 
+        console.log("Debug: URL Params", urlParams.toString());
+
         if (urlParams.has('sender') && urlParams.has('recipient') && urlParams.has('text')) {
             sender = urlParams.get('sender');
             recipient = urlParams.get('recipient');
             text = urlParams.get('text');
+
+            console.log("Debug: Retrieved from URL params", { sender, recipient, text });
 
             share_button.style.visibility = 'hidden';
             alert(`Happy Birthday ${recipient}!`);
@@ -30,14 +34,17 @@ document.addEventListener("DOMContentLoaded", function () {
             sender = localStorage.getItem('sender');
             recipient = localStorage.getItem('recipient');
             text = localStorage.getItem('text');
+
+            console.log("Debug: Retrieved from localStorage", { sender, recipient, text });
+
             alert("Birthday Card made!");
 
             if (sessionStorage.getItem('audio_link')) {
-                console.log('using audio link')
+                console.log("Using audio link from sessionStorage");
                 setAudio(sessionStorage.getItem('audio_link'), null);
                 share(sessionStorage.getItem('audio_link'), null);
             } else if (sessionStorage.getItem('audio_chunks')) {
-                console.log('using audio chunks')
+                console.log("Using audio chunks from sessionStorage");
                 setAudio(null, sessionStorage.getItem('audio_chunks'));
                 share(null, sessionStorage.getItem('audio_chunks'));
             }
@@ -55,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Missing DOM elements for title, from, or to.");
         }
     } catch (error) {
-        console.error("Error during initialization: ", error);
+        console.error("Error during initialization:", error);
     }
 });
 
@@ -81,7 +88,7 @@ function splitString(stringToSplit, limit) {
             container.appendChild(newLine);
         }
     } catch (error) {
-        console.error("Error in splitString: ", error);
+        console.error("Error in splitString:", error);
     }
 }
 
@@ -93,28 +100,29 @@ function clean() {
         localStorage.removeItem('audio_link');
         sessionStorage.removeItem('audio_chunks');
     } catch (error) {
-        console.error("Error while cleaning storage: ", error);
+        console.error("Error while cleaning storage:", error);
     }
 }
 
 async function urlShortener(link) {
     try {
         const apiUrl = `https://api.shrtco.de/v2/shorten?url=${encodeURIComponent(link)}`;
-        const response = await fetch(apiUrl);
+        console.log("Debug: Shortener API Link =", apiUrl);
 
+        const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error(`Shortener API responded with status: ${response.status}`);
         }
 
         const data = await response.json();
         if (data.ok && data.result && data.result.full_short_link) {
-            console.log("Shortened URL: ", data.result.full_short_link);
+            console.log("Shortened URL:", data.result.full_short_link);
             return data.result.full_short_link;
         } else {
             throw new Error("Invalid response structure from URL shortener API.");
         }
     } catch (error) {
-        console.error("Error in URL shortener: ", error);
+        console.error("Error in URL shortener:", error);
         return null;
     }
 }
@@ -133,10 +141,11 @@ function share(chunkies, linkies) {
             throw new Error("No valid audio data provided for sharing.");
         }
 
+        console.log("Debug: Shareable Link =", shareableLink);
         alert(`Share this link to ${recipient}: ${shareableLink}`);
         clean();
     } catch (error) {
-        console.error("Error in share function: ", error);
+        console.error("Error in share function:", error);
         alert("Something went wrong! Please try again.");
     }
 }
@@ -147,11 +156,10 @@ function setAudio(audio_link, audio_chunks) {
         if (!audio_player) throw new Error("Audio player element not found in DOM.");
 
         if (audio_link) {
-            console.log('audio method, link')
-
+            console.log("Setting audio from link");
             audio_player.src = audio_link;
         } else if (audio_chunks) {
-            console.log('audio method, chunks')
+            console.log("Setting audio from chunks");
             const base64Chunks = JSON.parse(audio_chunks);
             if (base64Chunks && Array.isArray(base64Chunks)) {
                 const blobParts = base64Chunks.map(base64 => {
@@ -174,7 +182,7 @@ function setAudio(audio_link, audio_chunks) {
             audio_player.src = ''; // Fallback to empty source
         }
     } catch (error) {
-        console.error("Error in setAudio: ", error);
+        console.error("Error in setAudio:", error);
         alert("Failed to process audio data.");
     }
 }
