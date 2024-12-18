@@ -33,9 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Birthday Card made!");
 
             if (sessionStorage.getItem('audio_link')) {
+                console.log('using audio link')
                 setAudio(sessionStorage.getItem('audio_link'), null);
                 share(sessionStorage.getItem('audio_link'), null);
             } else if (sessionStorage.getItem('audio_chunks')) {
+                console.log('using audio chunks')
                 setAudio(null, sessionStorage.getItem('audio_chunks'));
                 share(null, sessionStorage.getItem('audio_chunks'));
             }
@@ -145,8 +147,11 @@ function setAudio(audio_link, audio_chunks) {
         if (!audio_player) throw new Error("Audio player element not found in DOM.");
 
         if (audio_link) {
+            console.log('audio method, link')
+
             audio_player.src = audio_link;
         } else if (audio_chunks) {
+            console.log('audio method, chunks')
             const base64Chunks = JSON.parse(audio_chunks);
             if (base64Chunks && Array.isArray(base64Chunks)) {
                 const blobParts = base64Chunks.map(base64 => {
