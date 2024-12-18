@@ -39,14 +39,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             alert("Birthday Card made!");
 
-            if (sessionStorage.getItem('audio_link')) {
-                console.log("Using audio link from sessionStorage");
-                share(sessionStorage.getItem('audio_link'), null);
-                setAudio(sessionStorage.getItem('audio_link'), null);
-            } else if (sessionStorage.getItem('audio_chunks')) {
-                console.log("Using audio chunks from sessionStorage");
-                share(null, sessionStorage.getItem('audio_chunks'));
-                setAudio(null, sessionStorage.getItem('audio_chunks'));            }
+            if (localStorage.getItem('audio_link')) {
+                console.log("Using audio link from localStorage");
+                share(localStorage.getItem('audio_link'), null);
+                setAudio(localStorage.getItem('audio_link'), null);
+            } else if (localStorage.getItem('audio_chunks')) {
+                console.log("Using audio chunks from localStorage");
+                share(null, localStorage.getItem('audio_chunks'));
+                setAudio(null, localStorage.getItem('audio_chunks'));
+            } else {
+                console.log("no audio option found")
+            }
         } else {
             alert("How did you get here?");
             console.warn("No valid data found in URL or storage.");
@@ -97,7 +100,7 @@ function clean() {
         localStorage.removeItem('recipient');
         localStorage.removeItem('text');
         localStorage.removeItem('audio_link');
-        sessionStorage.removeItem('audio_chunks');
+        localStorage.removeItem('audio_chunks');
     } catch (error) {
         console.error("Error while cleaning storage:", error);
     }
