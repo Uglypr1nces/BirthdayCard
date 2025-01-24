@@ -15,6 +15,9 @@ Contributions are welcome! Please follow the guidelines in the [CONTRIBUTING.md]
 ## License:
 This project is licensed under the [MIT License](LICENSE).
 
+##Preview
+[![Watch the video](https://i.sstatic.net/Vp2cE.png)]([https://youtu.be/vt5fpE0bzSY](https://youtu.be/vt5fpE0bzSY))
+
 ## Screenshots
 ![alt text](/birthdaycard/content/screenshots/form.png)
 
