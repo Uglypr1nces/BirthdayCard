@@ -16,7 +16,7 @@ Contributions are welcome! Please follow the guidelines in the [CONTRIBUTING.md]
 This project is licensed under the [MIT License](LICENSE).
 
 ## Preview:
-[![Watch the video]([https://youtu.be/vt5fpE0bzSY](https://youtu.be/vt5fpE0bzSY))
+<iframe width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=CHANNEL_ID" frameborder="0" allowfullscreen></iframe>
 
 ## Screenshots:
 ![alt text](/birthdaycard/content/screenshots/form.png)
