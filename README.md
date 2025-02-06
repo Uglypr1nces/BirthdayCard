@@ -12,9 +12,6 @@ This project is a simple JavaScript application that allows you to send custom b
 ## Contributing:
 Contributions are welcome! Please follow the guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-## License:
-This project is licensed under the [MIT License](LICENSE).
-
 ## Preview:
 [![Youtube link](https://img.youtube.com/vi/yzd0elMPLaE/0.jpg)](https://www.youtube.com/watch?v=yzd0elMPLaE)
 
