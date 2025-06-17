@@ -11,13 +11,20 @@ document.getElementById('next-button').onclick = function() {
     var sender = document.getElementById('name').value;
     var recipient = document.getElementById('receiver_name').value;
     var text = document.getElementById('text').value;
-    audio_link = document.getElementById('audio-link').value
+    audio_link = document.getElementById('audio-link').value;
+
+    console.log('sender:', sender);
+    console.log('recipient:', recipient);
+    console.log('text:', text);
+    console.log('audio_link:', audio_link);
+    console.log('audio_chunks:', audio_chunks);
 
     localStorage['sender'] = sender;
     localStorage['recipient'] = recipient;
     localStorage['text'] = text;
     localStorage['audio_link'] = audio_link;
     localStorage['audio_chunks'] = audio_chunks;
+
 }
 document.getElementById('check-button').onclick = function(event) {
     event.preventDefault(); // Prevent form submission
