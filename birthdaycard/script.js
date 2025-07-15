@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (localStorage.getItem('audio_link')) {
                 console.log("Using audio link from localStorage");
-                share(localStorage.getItem('audio_link'), null);
                 setAudio(localStorage.getItem('audio_link'), null);
             } else if (localStorage.getItem('audio_chunks')) {
                 console.log("Using audio chunks from localStorage");
@@ -154,7 +153,7 @@ function share(chunkies, linkies) {
 
 function setAudio(link, chunks) {
     console.log(link)
-    console.log(link)
+    console.log(chunks)
     try {
         const audio_player = document.getElementById('audio-player');
         if (!audio_player) throw new Error("Audio player element not found in DOM.");

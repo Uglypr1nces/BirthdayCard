@@ -19,6 +19,7 @@ document.getElementById('next-button').onclick = function() {
     console.log('audio_link:', audio_link);
     console.log('audio_chunks:', audio_chunks);
 
+    alert("audio link: " + audio_link);
     localStorage['sender'] = sender;
     localStorage['recipient'] = recipient;
     localStorage['text'] = text;
@@ -26,6 +27,8 @@ document.getElementById('next-button').onclick = function() {
     localStorage['audio_chunks'] = audio_chunks;
 
 }
+1
+
 document.getElementById('check-button').onclick = function(event) {
     event.preventDefault(); // Prevent form submission
 
